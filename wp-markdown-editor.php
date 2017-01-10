@@ -126,8 +126,10 @@ class WpMarkdownEditor
                         var wrap = cm.getWrapperElement();
                         if(/fullscreen/.test(wrap.previousSibling.className)) {
                             document.getElementById("wp-content-editor-container").style.zIndex = 999999;
+                            document.getElementById("wp-content-editor-container").style.position = "absolute";
                         } else {
                             document.getElementById("wp-content-editor-container").style.zIndex = 1;
+                            document.getElementById("wp-content-editor-container").style.position = "initial";
                         }
                     }, 2);
                 }

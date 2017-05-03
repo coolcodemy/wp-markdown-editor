@@ -16,7 +16,7 @@ if (!function_exists('add_action')) {
 }
 
 if (!function_exists('jetpack_require_lib')) {
-    // include_once dirname(__FILE__) . '/../jetpack/require-lib.php';
+    include_once dirname(__FILE__) . '/../jetpack/require-lib.php';
 }
 
 if (!class_exists('WPCom_Markdown')) {
@@ -93,7 +93,7 @@ class WpMarkdownEditor
 
     public function jetpack_markdown_load_textdomain()
     {
-        load_plugin_textdomain('jetpack', false, dirname(plugin_basename(__FILE__)) . '/jetpack/languages/');
+        load_plugin_textdomain('jetpack', false, dirname(plugin_basename(__FILE__)) . '/../jetpack/languages/');
     }
 
     public function jetpack_markdown_settings_link($actions)

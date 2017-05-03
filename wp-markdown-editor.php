@@ -16,11 +16,11 @@ if (!function_exists('add_action')) {
 }
 
 if (!function_exists('jetpack_require_lib')) {
-    include_once dirname( __FILE__ ) . '/jetpack/require-lib.php';
+    include_once dirname(__FILE__) . '/jetpack/require-lib.php';
 }
 
-if (!class_exists('WPCom_Markdown')) {
-    include_once dirname( __FILE__ ) . '/jetpack/markdown/easy-markdown.php';
+if (!class_exists('WPCom_Markdown2')) {
+    include_once dirname(__FILE__) . '/jetpack/markdown/easy-markdown.php';
 }
 
 define('PLUGIN_VERSION', '2.0');
@@ -50,7 +50,7 @@ class WpMarkdownEditor
     public static function getInstance()
     {
         if (!isset(self::$instance)) {
-            $c = __CLASS__;
+            $c              = __CLASS__;
             self::$instance = new $c;
         }
         return self::$instance;
@@ -61,7 +61,7 @@ class WpMarkdownEditor
         trigger_error('Clone is not allowed.', E_USER_ERROR);
     }
 
-    function enqueue_stuffs()
+    public function enqueue_stuffs()
     {
         // only enqueue stuff on the post editor page
         if (get_current_screen()->base !== 'post') {
@@ -73,39 +73,39 @@ class WpMarkdownEditor
         wp_enqueue_style('custom-css', $this->plugin_url('/style.css'));
     }
 
-    function load_jetpack_markdown_module()
+    public function load_jetpack_markdown_module()
     {
         // If the module is active, let's make this active for posting, period.
         // Comments will still be optional.
-        add_filter('pre_option_' . WPCom_Markdown::POST_OPTION, '__return_true');
+        add_filter('pre_option_' . WPCom_Markdown2::POST_OPTION, '__return_true');
         add_action('admin_init', array($this, 'jetpack_markdown_posting_always_on'), 11);
         add_action('plugins_loaded', array($this, 'jetpack_markdown_load_textdomain'));
         add_filter('plugin_action_links_' . plugin_basename(__FILE__), array($this, 'jetpack_markdown_settings_link'));
     }
 
-    function jetpack_markdown_posting_always_on()
+    public function jetpack_markdown_posting_always_on()
     {
         global $wp_settings_fields;
-        if (isset($wp_settings_fields['writing']['default'][ WPCom_Markdown::POST_OPTION ])) {
-            unset($wp_settings_fields['writing']['default'][ WPCom_Markdown::POST_OPTION ]);
+        if (isset($wp_settings_fields['writing']['default'][WPCom_Markdown2::POST_OPTION])) {
+            unset($wp_settings_fields['writing']['default'][WPCom_Markdown2::POST_OPTION]);
         }
     }
 
-    function jetpack_markdown_load_textdomain()
+    public function jetpack_markdown_load_textdomain()
     {
-        load_plugin_textdomain('jetpack', false, dirname( plugin_basename( __FILE__ ) ) . '/jetpack/languages/');
+        load_plugin_textdomain('jetpack', false, dirname(plugin_basename(__FILE__)) . '/jetpack/languages/');
     }
 
-    function jetpack_markdown_settings_link($actions)
+    public function jetpack_markdown_settings_link($actions)
     {
         return array_merge(
-            array('settings' => sprintf('<a href="%s">%s</a>', 'options-discussion.php#' . WPCom_Markdown::COMMENT_OPTION, __('Settings', 'jetpack'))),
+            array('settings' => sprintf('<a href="%s">%s</a>', 'options-discussion.php#' . WPCom_Markdown2::COMMENT_OPTION, __('Settings', 'jetpack'))),
             $actions
         );
         return $actions;
     }
 
-    function init_editor()
+    public function init_editor()
     {
         if (get_current_screen()->base !== 'post') {
             return;
@@ -165,24 +165,24 @@ class WpMarkdownEditor
             </script>';
     }
 
-    function quicktags_settings($qtInit)
+    public function quicktags_settings($qtInit)
     {
         $qtInit['buttons'] = ' ';
         return $qtInit;
     }
 
-    function plugin_url($path)
+    public function plugin_url($path)
     {
         return plugins_url('wp-markdown-editor/' . $path);
     }
 
-    function plugin_activation()
+    public function plugin_activation()
     {
         global $wpdb;
         $wpdb->query("UPDATE `" . $wpdb->prefix . "usermeta` SET `meta_value` = 'false' WHERE `meta_key` = 'rich_editing'");
     }
 
-    function plugin_deactivation()
+    public function plugin_deactivation()
     {
         global $wpdb;
         $wpdb->query("UPDATE `" . $wpdb->prefix . "usermeta` SET `meta_value` = 'true' WHERE `meta_key` = 'rich_editing'");

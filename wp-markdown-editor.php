@@ -16,11 +16,11 @@ if (!function_exists('add_action')) {
 }
 
 if (!function_exists('jetpack_require_lib')) {
-    include_once dirname(__FILE__) . '/jetpack/require-lib.php';
+    // include_once dirname(__FILE__) . '/../jetpack/require-lib.php';
 }
 
-if (!class_exists('WPCom_Markdown2')) {
-    include_once dirname(__FILE__) . '/jetpack/markdown/easy-markdown.php';
+if (!class_exists('WPCom_Markdown')) {
+    // include_once dirname(__FILE__) . '/../jetpack/modules/markdown/easy-markdown.php';
 }
 
 define('PLUGIN_VERSION', '2.0');
@@ -77,7 +77,7 @@ class WpMarkdownEditor
     {
         // If the module is active, let's make this active for posting, period.
         // Comments will still be optional.
-        add_filter('pre_option_' . WPCom_Markdown2::POST_OPTION, '__return_true');
+        add_filter('pre_option_' . WPCom_Markdown::POST_OPTION, '__return_true');
         add_action('admin_init', array($this, 'jetpack_markdown_posting_always_on'), 11);
         add_action('plugins_loaded', array($this, 'jetpack_markdown_load_textdomain'));
         add_filter('plugin_action_links_' . plugin_basename(__FILE__), array($this, 'jetpack_markdown_settings_link'));
@@ -86,8 +86,8 @@ class WpMarkdownEditor
     public function jetpack_markdown_posting_always_on()
     {
         global $wp_settings_fields;
-        if (isset($wp_settings_fields['writing']['default'][WPCom_Markdown2::POST_OPTION])) {
-            unset($wp_settings_fields['writing']['default'][WPCom_Markdown2::POST_OPTION]);
+        if (isset($wp_settings_fields['writing']['default'][WPCom_Markdown::POST_OPTION])) {
+            unset($wp_settings_fields['writing']['default'][WPCom_Markdown::POST_OPTION]);
         }
     }
 
@@ -99,7 +99,7 @@ class WpMarkdownEditor
     public function jetpack_markdown_settings_link($actions)
     {
         return array_merge(
-            array('settings' => sprintf('<a href="%s">%s</a>', 'options-discussion.php#' . WPCom_Markdown2::COMMENT_OPTION, __('Settings', 'jetpack'))),
+            array('settings' => sprintf('<a href="%s">%s</a>', 'options-discussion.php#' . WPCom_Markdown::COMMENT_OPTION, __('Settings', 'jetpack'))),
             $actions
         );
         return $actions;

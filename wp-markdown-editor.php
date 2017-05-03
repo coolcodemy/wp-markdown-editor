@@ -16,11 +16,11 @@ if (!function_exists('add_action')) {
 }
 
 if (!function_exists('jetpack_require_lib')) {
-    include_once dirname(__FILE__) . '/../jetpack/require-lib.php';
+    // include_once dirname(__FILE__) . '/../jetpack/require-lib.php';
 }
 
 if (!class_exists('WPCom_Markdown')) {
-    // include_once dirname(__FILE__) . '/../jetpack/modules/markdown/easy-markdown.php';
+    include_once dirname(__FILE__) . '/../jetpack/modules/markdown/easy-markdown.php';
 }
 
 define('PLUGIN_VERSION', '2.0');
